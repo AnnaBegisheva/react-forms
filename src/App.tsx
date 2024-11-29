@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 import { Form, InputString, InputNumber, InputBoolean, Error, FormSchema } from 'react-forms';
 
-const schema = {
+const schema: FormSchema = {
   name: {
     type: 'string',
     validate: (value: string) => (value.length < 2 ? 'Имя должно быть не менее 2 символов' : undefined),
@@ -14,7 +14,7 @@ const schema = {
     type: 'boolean',
     validate: (value: boolean) => (value ? undefined : 'Вы должны согласиться на подписку'),
   },
-} as FormSchema;
+};
 
 function App() {
   return (

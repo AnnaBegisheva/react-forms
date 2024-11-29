@@ -22,8 +22,10 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
 
     // Валидация
     const fieldSchema = schema[field];
-    if (fieldSchema && fieldSchema.validate) {
+    if (fieldSchema && fieldSchema.validate && typeof value === fieldSchema.type) {
+      // @ts-expect-error
       const error = fieldSchema.validate(value);
+
       setErrors((prev) => ({ ...prev, [field]: error }));
     }
   };
