@@ -10,11 +10,12 @@ const InputNumber: React.FC<InputNumberProps> = ({ name }) => {
   const setValue = useContext(SetValueContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(name, event.target.value);
+    setValue(name, +event.target.value);
   };
 
   const value = values[name];
-  const numberValue = typeof value === 'number' ? value : Number(value || '');
+
+  const numberValue = typeof value === 'number' ? Number(value) : 0;
 
   return (
     <div>

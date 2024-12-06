@@ -4,15 +4,20 @@ import { Form, InputString, InputNumber, InputBoolean, Error, FormSchema } from 
 const schema: FormSchema = {
   name: {
     type: 'string',
-    validate: (value: string) => (value.length < 2 ? 'Имя должно быть не менее 2 символов' : undefined),
+    minLength: 2,
+    maxLength: 20,
+    pattern: /^[a-zA-Z0-9_]+$/,
+    validate: (value: string) => (value.length < 2 ? 'Некорректное имя.' : undefined),
   },
   age: {
     type: 'number',
-    validate: (value: number) => (value < 0 || value < 18 ? 'Возраст должен быть больше 18 лет' : undefined),
+    min: 18,
+    max: 100,
+    validate: (value: number) => (value < 0 || value < 18 ? 'Некорректный возраст.' : undefined),
   },
   subscribe: {
     type: 'boolean',
-    validate: (value: boolean) => (value ? undefined : 'Вы должны согласиться на подписку'),
+    validate: (value: boolean) => (value ? undefined : 'Вы должны согласиться на подписку.'),
   },
 };
 

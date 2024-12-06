@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
 import { FormSchema } from '../../schema';
+import { setPrototype } from '../../types/stringObject';
 
 type FormValues = { [key: string]: string | number | boolean };
 type FormErrors = { [key: string]: string | undefined };
@@ -17,16 +18,22 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
   const [values, setValues] = useState<FormValues>({});
   const [errors, setErrors] = useState<FormErrors>({});
 
+  setPrototype(schema);
+
   const handleUpdateValue = (field: string, value: string | number | boolean) => {
     setValues((prev) => ({ ...prev, [field]: value }));
 
     // Валидация
     const fieldSchema = schema[field];
-    if (fieldSchema && fieldSchema.validate && typeof value === fieldSchema.type) {
-      // @ts-expect-error
-      const error = fieldSchema.validate(value);
 
-      setErrors((prev) => ({ ...prev, [field]: error }));
+    if (fieldSchema && fieldSchema.validate && typeof value === fieldSchema.type) {
+      // @ts-expect-error-because
+      const customError = fieldSchema.validate(value) ? fieldSchema.validate(value) : '';
+      // @ts-expect-error-because
+      const innerError = fieldSchema.isValid(value) ? '' : fieldSchema.errorMessage;
+      const errorMessage = !customError && !innerError ? undefined : `${customError} ${innerError}`;
+
+      setErrors((prev) => ({ ...prev, [field]: errorMessage }));
     }
   };
 
