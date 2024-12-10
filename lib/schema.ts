@@ -1,21 +1,15 @@
 export type FieldSchema =
   | {
       type: 'string';
-      //   value?: string;
-      //   label?: string;
-      //   id?: string;
-      //   name?: string;
-      //   placeholder?: string;
-      //   required?: boolean;
-      //   minlength?: number;
-      //   maxlength?: number;
-      //   size?: number;
-      //   errorMessage?: string;
-      //   match?: RegExp;
+      minLength?: number;
+      maxLength?: number;
+      pattern?: RegExp;
       validate?: (value: string) => string | undefined; // Ошибка или undefined, если валидация прошла
     }
   | {
       type: 'number';
+      min?: number;
+      max?: number;
       validate?: (value: number) => string | undefined;
     }
   | {
