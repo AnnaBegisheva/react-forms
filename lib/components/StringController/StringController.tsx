@@ -9,7 +9,6 @@ interface ControllerProps {
 const StringController: React.FC<ControllerProps> = ({ name, render }) => {
   const values = useContext(ValuesContext);
   const setValue = useContext(SetValueContext);
-
   const value = values[name];
 
   const inputData = {

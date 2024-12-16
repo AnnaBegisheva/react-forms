@@ -29,7 +29,6 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
       // @ts-expect-error-error
       const customError = fieldSchema?.validate?.(value) ? fieldSchema?.validate(value) : '';
       const innerError = fieldSchema?.isValid?.(value) ? '' : fieldSchema.errorMessage;
-      console.log(innerError);
 
       const errorMessage = !customError && !innerError ? undefined : `${customError} ${innerError}`;
 

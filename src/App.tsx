@@ -1,5 +1,7 @@
 // import { useState } from 'react'
 import { Form, FormSchema, ErrorController, Controller } from 'react-forms';
+// import PhoneInput from 'react-phone-number-input';
+// import 'react-phone-number-input/style.css';
 
 const schema: FormSchema = {
   name: {
@@ -22,9 +24,9 @@ const schema: FormSchema = {
   email: {
     type: 'email',
   },
-  // phone: {
-  //   type: 'phone',
-  // },
+  phone: {
+    type: 'phone',
+  },
 };
 
 function App() {
@@ -53,6 +55,21 @@ function App() {
         <Controller name="email" render={(inputData) => <input {...inputData} placeholder="Введите email" />} />
         <ErrorController
           name="email"
+          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+        />
+      </div>
+
+      <div>
+        <div>Phone</div>
+        <Controller
+          name="phone"
+          render={(inputData) => <input {...inputData} placeholder="Введите телефон" />}
+          // render={(inputData) => (
+          //   <PhoneInput {...inputData} international countryCallingCodeEditable={false} defaultCountry="RU" />
+          // )}
+        />
+        <ErrorController
+          name="phone"
           render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
         />
       </div>

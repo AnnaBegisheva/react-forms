@@ -23,12 +23,6 @@ const Controller: React.FC<ControllerProps> = ({ name, render }) => {
     } else if (fieldType === 'number') {
       return NumberController;
     }
-    //  else if (fieldType === 'string') {
-    //   return StringController;
-    // }
-    // else if (fieldType === 'email') {
-    //   return EmailController;
-    // }
     return StringController;
   };
 

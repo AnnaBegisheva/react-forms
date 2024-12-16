@@ -56,9 +56,15 @@ const getEmailValidations = (field: FieldSchema) => {
   return composeValidations(...validations);
 };
 
-export const validateValue = (value: string | number | boolean, field: FieldSchema): string | undefined => {
-  console.log(field);
+const getPhoneValidations = (field: FieldSchema) => {
+  const validations: ValidationFunc<string>[] = [];
+  if (field.type === 'phone') {
+    validations.push((value: string) => check.isPhoneNumber(value));
+  }
+  return composeValidations(...validations);
+};
 
+export const validateValue = (value: string | number | boolean, field: FieldSchema): string | undefined => {
   if (field.type === 'string') {
     if (typeof value !== 'string') {
       return 'Value must be a string';
@@ -68,7 +74,6 @@ export const validateValue = (value: string | number | boolean, field: FieldSche
   }
 
   if (field.type === 'number') {
-    console.log(typeof value, 'valid');
     if (typeof value !== 'number') {
       return 'Value must be a number';
     }
@@ -80,8 +85,15 @@ export const validateValue = (value: string | number | boolean, field: FieldSche
     if (typeof value !== 'string') {
       return 'Value must be a valid email';
     }
-    console.log(typeof value);
     const validations = getEmailValidations(field);
+    return validations(value);
+  }
+
+  if (field.type === 'phone') {
+    if (typeof value !== 'string') {
+      return 'Value must be a valid phone';
+    }
+    const validations = getPhoneValidations(field);
     return validations(value);
   }
 
