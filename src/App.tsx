@@ -1,5 +1,5 @@
 // import { useState } from 'react'
-import { Form, InputString, InputNumber, InputBoolean, Error, FormSchema } from 'react-forms';
+import { Form, FormSchema, ErrorController, Controller } from 'react-forms';
 
 const schema: FormSchema = {
   name: {
@@ -19,25 +19,51 @@ const schema: FormSchema = {
     type: 'boolean',
     validate: (value: boolean) => (value ? undefined : 'Вы должны согласиться на подписку.'),
   },
+  email: {
+    type: 'email',
+  },
+  // phone: {
+  //   type: 'phone',
+  // },
 };
 
 function App() {
   return (
     <Form schema={schema}>
       <div>
-        <label>Имя</label>
-        <InputString name="name" />
-        <Error name="name" />
+        <div>Имя</div>
+        <Controller name="name" render={(inputData) => <input {...inputData} placeholder="Введите имя" />} />
+        <ErrorController
+          name="name"
+          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+        />
       </div>
+
       <div>
-        <label>Возраст</label>
-        <InputNumber name="age" />
-        <Error name="age" />
+        <div>Возраст</div>
+        <Controller name="age" render={(inputData) => <input {...inputData} type="number" />} />
+        <ErrorController
+          name="age"
+          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+        />
       </div>
+
       <div>
-        <label>Подписаться</label>
-        <InputBoolean name="subscribe" />
-        <Error name="subscribe" />
+        <div>Email</div>
+        <Controller name="email" render={(inputData) => <input {...inputData} placeholder="Введите email" />} />
+        <ErrorController
+          name="email"
+          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+        />
+      </div>
+
+      <div>
+        <div>Подписаться</div>
+        <Controller name="subscribe" render={(inputData) => <input {...inputData} type="checkbox" />} />
+        <ErrorController
+          name="subscribe"
+          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+        />
       </div>
     </Form>
   );

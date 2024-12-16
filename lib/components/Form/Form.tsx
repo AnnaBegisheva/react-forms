@@ -5,6 +5,7 @@ import { setPrototype } from '../../types/stringObject';
 type FormValues = { [key: string]: string | number | boolean };
 type FormErrors = { [key: string]: string | undefined };
 
+const SchemaContext = createContext<FormSchema>({});
 const ValuesContext = createContext<FormValues>({});
 const ErrorsContext = createContext<FormErrors>({});
 const SetValueContext = createContext<(field: string, value: string | number | boolean) => void>(() => {});
@@ -20,30 +21,31 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
 
   setPrototype(schema);
 
-  const handleUpdateValue = (field: string, value: string | number | boolean) => {
-    setValues((prev) => ({ ...prev, [field]: value }));
+  const handleUpdateValue = (fieldName: string, value: string | number | boolean) => {
+    setValues((prev) => ({ ...prev, [fieldName]: value }));
 
-    // Валидация
-    const fieldSchema = schema[field];
+    const fieldSchema = schema[fieldName];
+    if (fieldSchema) {
+      // @ts-expect-error-error
+      const customError = fieldSchema?.validate?.(value) ? fieldSchema?.validate(value) : '';
+      const innerError = fieldSchema?.isValid?.(value) ? '' : fieldSchema.errorMessage;
+      console.log(innerError);
 
-    if (fieldSchema && fieldSchema.validate && typeof value === fieldSchema.type) {
-      // @ts-expect-error-because
-      const customError = fieldSchema.validate(value) ? fieldSchema.validate(value) : '';
-      // @ts-expect-error-because
-      const innerError = fieldSchema.isValid(value) ? '' : fieldSchema.errorMessage;
       const errorMessage = !customError && !innerError ? undefined : `${customError} ${innerError}`;
 
-      setErrors((prev) => ({ ...prev, [field]: errorMessage }));
+      setErrors((prev) => ({ ...prev, [fieldName]: errorMessage }));
     }
   };
 
   return (
-    <ValuesContext.Provider value={values}>
-      <ErrorsContext.Provider value={errors}>
-        <SetValueContext.Provider value={handleUpdateValue}>{children}</SetValueContext.Provider>
-      </ErrorsContext.Provider>
-    </ValuesContext.Provider>
+    <SchemaContext.Provider value={schema}>
+      <ValuesContext.Provider value={values}>
+        <ErrorsContext.Provider value={errors}>
+          <SetValueContext.Provider value={handleUpdateValue}>{children}</SetValueContext.Provider>
+        </ErrorsContext.Provider>
+      </ValuesContext.Provider>
+    </SchemaContext.Provider>
   );
 };
 
-export { Form, ValuesContext, ErrorsContext, SetValueContext };
+export { Form, SchemaContext, ValuesContext, ErrorsContext, SetValueContext };

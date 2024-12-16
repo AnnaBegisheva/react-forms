@@ -1,14 +1,12 @@
-import { FormSchema } from '../schema';
+import { FormSchema, FieldSchema } from '../schema';
 import { validateValue } from '../utils/validate';
 
-interface stringObject {
-  type: 'string';
-  errorMessage: string | undefined;
-  isValid(value: unknown): boolean;
+export interface IFieldPrototype {
+  errorMessage?: string | undefined;
+  isValid?: (value: string | number | boolean) => boolean;
 }
 
-const ObjectStringPrototype: stringObject = {
-  type: 'string',
+const FieldPrototype: FieldSchema = {
   errorMessage: undefined,
   isValid(value: string | number | boolean): boolean {
     const errorMessage = validateValue(value, this);
@@ -19,6 +17,6 @@ const ObjectStringPrototype: stringObject = {
 
 export const setPrototype = (schema: FormSchema): void => {
   Object.keys(schema).map((field) => {
-    Object.setPrototypeOf(schema[field], ObjectStringPrototype);
+    Object.setPrototypeOf(schema[field], FieldPrototype);
   });
 };
