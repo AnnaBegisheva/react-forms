@@ -13,7 +13,7 @@ const composeValidations = <T>(...validations: ValidationFunc<T>[]): ValidationF
   };
 };
 
-const getValidations = (field: FieldSchema) => {
+const getStringValidations = (field: FieldSchema) => {
   const validations: ValidationFunc<string>[] = [];
   if (field.type === 'string') {
     if (Object.hasOwn(field, 'minLength')) {
@@ -47,12 +47,29 @@ const getNumberValidations = (field: FieldSchema): ValidationFunc<number> => {
   return composeValidations(...validations);
 };
 
+const getEmailValidations = (field: FieldSchema) => {
+  const validations: ValidationFunc<string>[] = [];
+  if (field.type === 'email') {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    validations.push((value: string) => check.pattern(value, emailRegex));
+  }
+  return composeValidations(...validations);
+};
+
+const getPhoneValidations = (field: FieldSchema) => {
+  const validations: ValidationFunc<string>[] = [];
+  if (field.type === 'phone') {
+    validations.push((value: string) => check.isPhoneNumber(value));
+  }
+  return composeValidations(...validations);
+};
+
 export const validateValue = (value: string | number | boolean, field: FieldSchema): string | undefined => {
   if (field.type === 'string') {
     if (typeof value !== 'string') {
       return 'Value must be a string';
     }
-    const validations = getValidations(field);
+    const validations = getStringValidations(field);
     return validations(value); // value уже гарантированно типизировано как string
   }
 
@@ -62,6 +79,22 @@ export const validateValue = (value: string | number | boolean, field: FieldSche
     }
     const validations = getNumberValidations(field);
     return validations(value); // value уже гарантированно типизировано как number
+  }
+
+  if (field.type === 'email') {
+    if (typeof value !== 'string') {
+      return 'Value must be a valid email';
+    }
+    const validations = getEmailValidations(field);
+    return validations(value);
+  }
+
+  if (field.type === 'phone') {
+    if (typeof value !== 'string') {
+      return 'Value must be a valid phone';
+    }
+    const validations = getPhoneValidations(field);
+    return validations(value);
   }
 
   return undefined;
