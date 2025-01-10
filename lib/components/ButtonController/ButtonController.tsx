@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ValuesContext } from '../Form/Form';
+import { ValuesContext, ErrorsContext } from '../Form/Form';
 
 interface ControllerProps {
   disabled?: boolean;
@@ -8,8 +8,12 @@ interface ControllerProps {
 
 const ButtonController: React.FC<ControllerProps> = ({ render, disabled = false }) => {
   const formData = useContext(ValuesContext);
+  const errors = useContext(ErrorsContext);
 
-  return render({ formData, disabled });
+  const isDisabled =
+    Object.keys(errors).length > 0 && Object.values(errors).some((value) => value !== undefined) ? true : disabled;
+
+  return render({ formData, disabled: isDisabled });
 };
 
 export { ButtonController };
