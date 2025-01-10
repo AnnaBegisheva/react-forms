@@ -1,7 +1,4 @@
-// import { useState } from 'react'
-import { Form, FormSchema, ErrorController, Controller } from 'react-forms';
-// import PhoneInput from 'react-phone-number-input';
-// import 'react-phone-number-input/style.css';
+import { Form, FormSchema, ErrorController, ButtonController, Controller } from 'react-forms';
 
 const schema: FormSchema = {
   name: {
@@ -61,13 +58,7 @@ function App() {
 
       <div>
         <div>Phone</div>
-        <Controller
-          name="phone"
-          render={(inputData) => <input {...inputData} placeholder="Введите телефон" />}
-          // render={(inputData) => (
-          //   <PhoneInput {...inputData} international countryCallingCodeEditable={false} defaultCountry="RU" />
-          // )}
-        />
+        <Controller name="phone" render={(inputData) => <input {...inputData} placeholder="Введите телефон" />} />
         <ErrorController
           name="phone"
           render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
@@ -82,6 +73,20 @@ function App() {
           render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
         />
       </div>
+
+      <ButtonController
+        // disabled={true}
+        render={({ formData, disabled }) => (
+          <button
+            disabled={disabled}
+            onClick={() => {
+              console.log('Данные формы:', formData);
+            }}
+          >
+            Отправить
+          </button>
+        )}
+      />
     </Form>
   );
 }
