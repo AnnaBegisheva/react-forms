@@ -45,7 +45,6 @@ describe('Form validation and behavior', () => {
   //     fireEvent.change(nameInput, { target: { value: 'A' } });
   //     fireEvent.change(emailInput, { target: { value: 'somemail' } });
 
-  //     // Проверяем, что кнопка отправки отключена
   //     await waitFor(() => {
   //         expect(submitButton).toBeDisabled();
   //     });
@@ -61,20 +60,14 @@ describe('Form validation and behavior', () => {
   //     const subscribeInput = getByTestId('subscribe');
   //     const submitButton = screen.getByText('Отправить');
 
-  //     // Вводим корректные данные
   //     fireEvent.change(nameInput, { target: { value: 'ValidName' } });
   //     fireEvent.change(ageInput, { target: { value: 30 } });
   //     fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
   //     fireEvent.change(phoneInput, { target: { value: '+1234567890' } });
   //     fireEvent.click(subscribeInput); // Подписка включена
 
-  //     // Мокируем console.log
-  //     const consoleSpy = jest.spyOn(console, 'log');
-
-  //     // Нажимаем на кнопку
   //     fireEvent.click(submitButton);
 
-  //     // Проверяем, что в консоли появятся правильные данные
   //     await waitFor(() => {
   //         expect(consoleSpy).toHaveBeenCalledWith('Данные формы:', {
   //             name: 'ValidName',
@@ -85,7 +78,5 @@ describe('Form validation and behavior', () => {
   //         });
   //     });
 
-  //     // Отчищаем шпион
-  //     consoleSpy.mockRestore();
   // });
 });
