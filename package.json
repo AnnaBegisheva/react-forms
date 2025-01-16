@@ -1,10 +1,16 @@
 {
-  "name": "react-forms",
+  "name": "react-form-controllers",
   "version": "0.0.1",
+  "description": "Simple controllers for forms in React",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnnaBegisheva/react-forms.git"
+  },
   "type": "module",
   "files": [
     "dist"
   ],
+  "license": "MIT",
   "main": "./dist/react-forms.umd.cjs",
   "module": "./dist/react-forms.js",
   "exports": {
@@ -13,6 +19,10 @@
       "require": "./dist/react-forms.umd.cjs"
     }
   },
+  "keywords": [
+    "react",
+    "react-form"
+  ],
   "scripts": {
     "dev": "vite",
     "prebuild": "rimraf dist",
