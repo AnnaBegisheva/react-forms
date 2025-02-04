@@ -49,6 +49,7 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
     <SchemaContext.Provider value={schema}>
       <ValuesContext.Provider value={values}>
         <ErrorsContext.Provider value={errors}>
+          {/* @ts-ignore */}
           <SetValueContext.Provider value={handleUpdateValue}>{children}</SetValueContext.Provider>
         </ErrorsContext.Provider>
       </ValuesContext.Provider>
