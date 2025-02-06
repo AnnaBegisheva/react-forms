@@ -9,6 +9,7 @@ const SchemaContext = createContext<FormSchema>({});
 const ValuesContext = createContext<FormValues>({});
 const ErrorsContext = createContext<FormErrors>({});
 const SetValueContext = createContext<(field: string, value: string | number | boolean) => void>(() => {});
+const ResetValuesContext = createContext<() => void>(() => {});
 
 interface FormProps {
   schema: FormSchema;
@@ -45,16 +46,23 @@ const Form: React.FC<FormProps> = ({ schema, children }) => {
     }
   };
 
+  const handleResetValues = () => {
+    setValues({});
+    setErrors({});
+  };
+
   return (
     <SchemaContext.Provider value={schema}>
       <ValuesContext.Provider value={values}>
         <ErrorsContext.Provider value={errors}>
           {/* @ts-ignore */}
-          <SetValueContext.Provider value={handleUpdateValue}>{children}</SetValueContext.Provider>
+          <SetValueContext.Provider value={handleUpdateValue}>
+            <ResetValuesContext.Provider value={handleResetValues}>{children}</ResetValuesContext.Provider>
+          </SetValueContext.Provider>
         </ErrorsContext.Provider>
       </ValuesContext.Provider>
     </SchemaContext.Provider>
   );
 };
 
-export { Form, SchemaContext, ValuesContext, ErrorsContext, SetValueContext };
+export { Form, SchemaContext, ValuesContext, ErrorsContext, SetValueContext, ResetValuesContext };

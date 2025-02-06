@@ -75,11 +75,12 @@ function App() {
       </div>
 
       <ButtonController
-        render={({ formData, disabled }) => (
+        render={({ formData, disabled, reset }) => (
           <button
             disabled={disabled}
             onClick={() => {
               console.log('Данные формы:', formData);
+              reset();
             }}
           >
             Отправить
