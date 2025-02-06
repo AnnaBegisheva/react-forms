@@ -1,7 +1,4 @@
-// import { useState } from 'react'
-import { Form, FormSchema, ErrorController, Controller } from 'react-forms';
-// import PhoneInput from 'react-phone-number-input';
-// import 'react-phone-number-input/style.css';
+import { Form, FormSchema, ErrorController, ButtonController, Controller } from 'react-forms';
 
 const schema: FormSchema = {
   name: {
@@ -37,7 +34,7 @@ function App() {
         <Controller name="name" render={(inputData) => <input {...inputData} placeholder="Введите имя" />} />
         <ErrorController
           name="name"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -46,7 +43,7 @@ function App() {
         <Controller name="age" render={(inputData) => <input {...inputData} type="number" />} />
         <ErrorController
           name="age"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -55,22 +52,16 @@ function App() {
         <Controller name="email" render={(inputData) => <input {...inputData} placeholder="Введите email" />} />
         <ErrorController
           name="email"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
       <div>
         <div>Phone</div>
-        <Controller
-          name="phone"
-          render={(inputData) => <input {...inputData} placeholder="Введите телефон" />}
-          // render={(inputData) => (
-          //   <PhoneInput {...inputData} international countryCallingCodeEditable={false} defaultCountry="RU" />
-          // )}
-        />
+        <Controller name="phone" render={(inputData) => <input {...inputData} placeholder="Введите телефон" />} />
         <ErrorController
           name="phone"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -79,9 +70,23 @@ function App() {
         <Controller name="subscribe" render={(inputData) => <input {...inputData} type="checkbox" />} />
         <ErrorController
           name="subscribe"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
+
+      <ButtonController
+        render={({ formData, disabled, reset }) => (
+          <button
+            disabled={disabled}
+            onClick={() => {
+              console.log('Данные формы:', formData);
+              reset();
+            }}
+          >
+            Отправить
+          </button>
+        )}
+      />
     </Form>
   );
 }
