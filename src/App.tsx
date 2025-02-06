@@ -34,7 +34,7 @@ function App() {
         <Controller name="name" render={(inputData) => <input {...inputData} placeholder="Введите имя" />} />
         <ErrorController
           name="name"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -43,7 +43,7 @@ function App() {
         <Controller name="age" render={(inputData) => <input {...inputData} type="number" />} />
         <ErrorController
           name="age"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -52,7 +52,7 @@ function App() {
         <Controller name="email" render={(inputData) => <input {...inputData} placeholder="Введите email" />} />
         <ErrorController
           name="email"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -61,7 +61,7 @@ function App() {
         <Controller name="phone" render={(inputData) => <input {...inputData} placeholder="Введите телефон" />} />
         <ErrorController
           name="phone"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
@@ -70,12 +70,11 @@ function App() {
         <Controller name="subscribe" render={(inputData) => <input {...inputData} type="checkbox" />} />
         <ErrorController
           name="subscribe"
-          render={(inputData) => <input {...inputData} style={{ color: 'red', border: 'none', width: '100%' }} />}
+          render={(inputData) => <div style={{ color: 'red', marginBlock: '5px' }}>{inputData.value}</div>}
         />
       </div>
 
       <ButtonController
-        // disabled={true}
         render={({ formData, disabled }) => (
           <button
             disabled={disabled}

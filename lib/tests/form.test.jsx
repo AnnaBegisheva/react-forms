@@ -7,68 +7,87 @@ describe('Form validation and behavior', () => {
     render(<App />);
 
     const nameInput = screen.getByPlaceholderText('Введите имя');
+    const ageInput = screen.getByRole('spinbutton');
     const emailInput = screen.getByPlaceholderText('Введите email');
     const phoneInput = screen.getByPlaceholderText('Введите телефон');
-    const subscribeInput = screen.getByTestId('subscribe');
+    const subscribeCheckbox = screen.getByRole('checkbox');
+    const submitButton = screen.getByText('Отправить');
 
     fireEvent.change(nameInput, { target: { value: 'A' } });
+    fireEvent.change(ageInput, { target: { value: '10' } });
     fireEvent.change(emailInput, { target: { value: 'invalidEmail' } });
     fireEvent.change(phoneInput, { target: { value: '123' } });
-    fireEvent.click(subscribeInput);
+    fireEvent.click(subscribeCheckbox);
+    fireEvent.click(subscribeCheckbox);
 
     await waitFor(() => {
       expect(screen.getByText(/Некорректное имя/)).toBeInTheDocument();
       expect(screen.getByText(/Некорректный возраст/)).toBeInTheDocument();
       expect(screen.getByText(/Неверный формат/)).toBeInTheDocument();
       expect(screen.getByText(/Введите валидный номер телефона/)).toBeInTheDocument();
+      expect(subscribeCheckbox.checked).toEqual(false);
       expect(screen.getByText(/Вы должны согласиться на подписку/)).toBeInTheDocument();
-    });
-  });
-
-  test('should remove errors when valid input is provided', async () => {
-    const { getByTestId } = render(<App />);
-
-    const nameInput = screen.getByPlaceholderText('Введите имя');
-    const ageInput = getByTestId('age').textContent;
-    const emailInput = screen.getByPlaceholderText('Введите email');
-    const phoneInput = screen.getByPlaceholderText('Введите телефон');
-    const subscribeInput = getByTestId('subscribe');
-    const submitButton = screen.getByText('Отправить');
-
-    fireEvent.change(nameInput, { target: { value: 'A' } });
-    fireEvent.change(emailInput, { target: { value: 'somemail' } });
-
-    await waitFor(() => {
       expect(submitButton).toBeDisabled();
     });
   });
 
-  test('should call the callback with correct data when form is valid', async () => {
-    const { getByTestId } = render(<App />);
+  test('should remove errors when valid input is provided', async () => {
+    render(<App />);
 
     const nameInput = screen.getByPlaceholderText('Введите имя');
-    const ageInput = getByTestId('age').textContent;
+    const ageInput = screen.getByRole('spinbutton');
     const emailInput = screen.getByPlaceholderText('Введите email');
     const phoneInput = screen.getByPlaceholderText('Введите телефон');
-    const subscribeInput = getByTestId('subscribe');
+    const subscribeCheckbox = screen.getByRole('checkbox');
     const submitButton = screen.getByText('Отправить');
 
-    fireEvent.change(nameInput, { target: { value: 'ValidName' } });
-    fireEvent.change(ageInput, { target: { value: 30 } });
-    fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
-    fireEvent.change(phoneInput, { target: { value: '+1234567890' } });
-    fireEvent.click(subscribeInput);
+    fireEvent.change(nameInput, { target: { value: 'validName' } });
+    fireEvent.change(ageInput, { target: { value: '30' } });
+    fireEvent.change(emailInput, { target: { value: 'validEmail@mail.com' } });
+    fireEvent.change(phoneInput, { target: { value: '+79997777777' } });
+    fireEvent.click(subscribeCheckbox);
 
+    await waitFor(() => {
+      expect(screen.queryByText(/Некорректное имя/i)).toBeNull();
+      expect(screen.queryByText(/Некорректный возраст/)).toBeNull();
+      expect(screen.queryByText(/Неверный формат/)).toBeNull();
+      expect(screen.queryByText(/Введите валидный номер телефона/)).toBeNull();
+      expect(subscribeCheckbox.checked).toEqual(true);
+      expect(screen.queryByText(/Вы должны согласиться на подписку/)).toBeNull();
+      expect(submitButton).toBeEnabled();
+    });
+  });
+
+  test('should call the callback with correct data when form is valid', async () => {
+    const mockSubmit = jest.spyOn(console, 'log').mockImplementation();
+    render(<App />);
+
+    const nameInput = screen.getByPlaceholderText('Введите имя');
+    const ageInput = screen.getByRole('spinbutton');
+    const emailInput = screen.getByPlaceholderText('Введите email');
+    const phoneInput = screen.getByPlaceholderText('Введите телефон');
+    const subscribeCheckbox = screen.getByRole('checkbox');
+    const submitButton = screen.getByText('Отправить');
+
+    fireEvent.change(nameInput, { target: { value: 'validName' } });
+    fireEvent.change(ageInput, { target: { value: '30' } });
+    fireEvent.change(emailInput, { target: { value: 'validEmail@mail.com' } });
+    fireEvent.change(phoneInput, { target: { value: '+79997777777' } });
+    fireEvent.click(subscribeCheckbox);
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalledWith('Данные формы:', {
-        name: 'ValidName',
+      expect(mockSubmit).toHaveBeenCalledWith('Данные формы:', {
+        name: 'validName',
         age: 30,
-        email: 'valid@example.com',
-        phone: '+1234567890',
+        email: 'validEmail@mail.com',
+        phone: '+79997777777',
         subscribe: true,
       });
     });
+
+    expect(mockSubmit).toHaveBeenCalledTimes(1);
+
+    mockSubmit.mockRestore();
   });
 });
